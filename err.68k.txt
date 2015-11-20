@@ -1,0 +1,18 @@
+
+SN 68k version 2.53
+
+Z80 bank Mus00 has $0 free bytes.
+Z80 bank Mus01 has $BF free bytes.
+Z80 bank DAC00 has $1C3 free bytes.
+Z80 bank SFX00 has $257 free bytes.
+Z80 bank Mus02 has $0 free bytes.
+Z80 bank Mus03 has $2D free bytes.
+Z80 bank Mus04 has $3C free bytes.
+Z80 bank Mus05 has $154 free bytes.
+Z80 bank DAC01 has $4BD free bytes.
+Z80 bank DAC02 has $308 free bytes.
+Z80 bank DAC03 has $D6 free bytes.
+Z80 bank SFX01 has $257 free bytes.
+
+Assembly completed.
+0 error(s) from 285792 lines in 1.53 seconds

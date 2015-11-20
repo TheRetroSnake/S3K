@@ -1,0 +1,108 @@
+	StartDriver "SK"
+; fucking A and B ASM68K, can you just not do multilines you shit?
+	Z80Bank_StartBank 0, Music_Credits, 'Sound/Music/Credits.bin', Music_GameOver,'Sound/Music/Game Over.bin', Music_Continue, 'Sound/Music/Continue.bin', Music_ActClear, 'Sound/Music/Level Outro.bin', Music_Invincible, 'Sound/Music/Invincible.bin', Music_Menu, 'Sound/Music/Menu.bin', Music_FinalBoss, 'Sound/Music/Final Boss.bin', Music_GameComplete, 'Sound/Music/Game Complete.bin'
+; ===========================================================================
+	Z80Bank_Start Z80BankAlign_End,"Mus01"
+Music_FBZ1:		incbin 'Sound/Music/FBZ1.bin'
+Music_FBZ2:		incbin 'Sound/Music/FBZ2.bin'
+Music_MHZ1:		incbin 'Sound/Music/MHZ1.bin'
+Music_MHZ2:		incbin 'Sound/Music/MHZ2.bin'
+Music_SOZ1:		incbin 'Sound/Music/SOZ1.bin'
+Music_SOZ2:		incbin 'Sound/Music/SOZ2.bin'
+Music_LRZ1:		incbin 'Sound/Music/LRZ1.bin'
+Music_LRZ2:		incbin 'Sound/Music/LRZ2.bin'
+Music_SSZ:		incbin 'Sound/Music/SSZ.bin'
+Music_DEZ1:		incbin 'Sound/Music/DEZ1.bin'
+Music_DEZ2:		incbin 'Sound/Music/DEZ2.bin'
+Music_Miniboss:		incbin 'Sound/Music/Miniboss.bin'
+Music_ZoneBoss:		incbin 'Sound/Music/Zone Boss.bin'
+Music_DDZ:		incbin 'Sound/Music/DDZ.bin'
+Music_Pachinko:		incbin 'Sound/Music/Pachinko.bin'
+Music_SpecialStage:	incbin 'Sound/Music/Special Stage.bin'
+Music_Slots:		incbin 'Sound/Music/Slots.bin'
+Music_Knuckles:		incbin 'Sound/Music/Knuckles.bin'
+Music_Title:		incbin 'Sound/Music/Title.bin'
+Music_1UP:		incbin 'Sound/Music/1UP.bin'
+Music_ChaosEmerald:	incbin 'Sound/Music/Chaos Emerald.bin'
+	Z80Bank_End
+; ===========================================================================
+	DACBank_Defs 0	; create ROM pointers and setup information about DACs
+; ===========================================================================
+	incDAC 86, bin
+	incDAC 81, bin
+	incDAC 82_85, bin
+	incDAC 94_97, bin
+	incDAC 90_93, bin
+	incDAC 88, bin
+	incDAC 8A_8B, bin
+	incDAC 8C, bin
+	incDAC 8D_8E, bin
+	incDAC 87, bin
+	incDAC 8F, bin
+	incDAC 89, bin
+	incDAC 98_9A, bin
+	incDAC 9B, bin
+	incDAC B2_B3, bin
+
+; ===========================================================================
+		align $10
+Z80_Snd_Driver:		incbin 'Sound/Driver/SK.kos'
+; ===========================================================================
+Z80_Snd_Driver2:; create pointers to our music
+	Z80PtrROMBank Music_AIZ1, Music_AIZ2, Music_HCZ1, Music_HCZ2
+	Z80PtrROMBank Music_MGZ1, Music_MGZ2, Music_CNZ1, Music_CNZ2
+	Z80PtrROMBank Music_FBZ1, Music_FBZ2, Music_ICZ1, Music_ICZ2
+	Z80PtrROMBank Music_LBZ1, Music_LBZ2, Music_MHZ1, Music_MHZ2
+
+	Z80PtrROMBank Music_SOZ1, Music_SOZ2, Music_LRZ1, Music_LRZ2
+	Z80PtrROMBank Music_SSZ, Music_DEZ1, Music_DEZ2, Music_Miniboss
+	Z80PtrROMBank Music_ZoneBoss, Music_DDZ, Music_Pachinko, Music_SlotsBonus
+	Z80PtrROMBank Music_SpecialStage, Music_GumBonus, Music_Knuckles, Music_AL
+
+	Z80PtrROMBank Music_BP, Music_DP, Music_CG, Music_EM
+	Z80PtrROMBank Music_Title, Music_Credits_S3, Music_GameOver, Music_Continue
+	Z80PtrROMBank Music_ActClear, Music_1UP, Music_ChaosEmerald, Music_Invincible
+	Z80PtrROMBank Music_2PMenu, Music_Miniboss, Music_Menu, Music_FinalBoss
+
+	Z80PtrROMBank Music_Drowning, Music_AllClear, Music_Credits
+
+	Z80createSFXptrs	; and to sound effects
+; ===========================================================================
+	include "Sound/Driver/Voices.68k"	; universal voice bank
+	Z80Bank_End
+; ===========================================================================
+	Z80Bank_SFX	"SFX00"	; include sound effects
+	DoDacFile	; write DAC banks to external ROM
+; ===========================================================================
+offs =	0	; write music banks to external ROM
+	StartFile	MusicBanks_SK, "Sound/Driver/MusicBanks_SK.bin", 0
+	MusMakeBankID	Music_AIZ1, Music_AIZ2, Music_HCZ1, Music_HCZ2
+	MusMakeBankID	Music_MGZ1, Music_MGZ2, Music_CNZ1, Music_CNZ2
+	MusMakeBankID	Music_FBZ1, Music_FBZ2, Music_ICZ1, Music_ICZ2
+	MusMakeBankID	Music_LBZ1, Music_LBZ2, Music_MHZ1, Music_MHZ2
+
+	MusMakeBankID	Music_SOZ1, Music_SOZ2, Music_LRZ1, Music_LRZ2
+	MusMakeBankID	Music_SSZ, Music_DEZ1, Music_DEZ2, Music_Miniboss
+	MusMakeBankID	Music_ZoneBoss, Music_DDZ, Music_Pachinko, Music_SlotsBonus
+	MusMakeBankID	Music_SpecialStage, Music_GumBonus, Music_Knuckles, Music_AL
+
+	MusMakeBankID	Music_BP, Music_DP, Music_CG, Music_EM
+	MusMakeBankID	Music_Title, Music_Credits_S3, Music_GameOver, Music_Continue
+	MusMakeBankID	Music_ActClear, Music_1UP, Music_ChaosEmerald, Music_Invincible
+	MusMakeBankID	Music_2PMenu, Music_Miniboss, Music_Menu, Music_FinalBoss
+
+	MusMakeBankID	Music_Drowning, Music_AllClear, Music_Credits
+	EndFile
+; ===========================================================================
+	; then create also ROM for misc variables
+	StartFile	SndVariables_SK, "Sound/Driver/VariablesSK.Z80", 0
+	dc.b 'DefaultMusicBank = ', 1	; default music bank location
+	MakeBankID	Music_FBZ1
+	dc.b 'SoundBank = ', 1		; sound effect bank location
+	MakeBankID	SoundSK_33
+	dc.b 'SegaPCMBank = ', 1	; SEGA PCM bank location
+	MakeBankID	SEGA_PCMSK
+	dc.b 'SegaPCMPtr = ', 2		; SEGA PCM pointer
+	dc.w	(((SEGA_PCMSK-z80BankAddr)&$7FFF)+$8000)
+	EndFile
+; ===========================================================================

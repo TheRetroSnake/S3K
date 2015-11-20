@@ -1,0 +1,184 @@
+	StartDriver "S3"
+; fucking A and B ASM68K, can you just not do multilines you shit?
+	Z80Bank_StartBank 2, Music_MiniBoss_S3, "Sound/Music/MiniBoss.S3.bin", Music_FinalBoss_S3, "Sound/Music/Final Boss.S3.bin", ,"Sound/Music/S3_Bank00_Pad.bin"
+; ===========================================================================
+	Z80Bank_Start Z80BankAlign_Both,"Mus03"
+Music_AIZ1:		incbin	"Sound/Music/AIZ1.bin"
+Music_AIZ2:		incbin	"Sound/Music/AIZ2.bin"
+Music_HCZ1:		incbin	"Sound/Music/HCZ1.bin"
+Music_HCZ2:		incbin	"Sound/Music/HCZ2.bin"
+Music_MGZ1:		incbin	"Sound/Music/MGZ1.bin"
+Music_MGZ2:		incbin	"Sound/Music/MGZ2.bin"
+Music_CNZ2:		incbin	"Sound/Music/CNZ2.bin"
+Music_CNZ1:		incbin	"Sound/Music/CNZ1.bin"
+Music_FBZ1_S3:		incbin	"Sound/Music/FBZ1.S3.bin"
+Music_FBZ2_S3:		incbin	"Sound/Music/FBZ2.S3.bin"
+Music_DDZ_S3:		incbin	"Sound/Music/Doomsday.S3.bin"
+	Z80Bank_End
+; ===========================================================================
+	Z80Bank_Start Z80BankAlign_End,"Mus04"
+Music_ICZ2:		incbin	"Sound/Music/ICZ2.bin"
+Music_ICZ1:		incbin	"Sound/Music/ICZ1.bin"
+Music_LBZ2:		incbin	"Sound/Music/LBZ2.bin"
+Music_LBZ1:		incbin	"Sound/Music/LBZ1.bin"
+Music_MVZ1_S3:		incbin	"Sound/Music/MVZ1.S3.bin"
+Music_MVZ2_S3:		incbin	"Sound/Music/MVZ2.S3.bin"
+Music_SOZ1_S3:		incbin	"Sound/Music/SOZ1.S3.bin"
+Music_SOZ2_S3:		incbin	"Sound/Music/SOZ2.S3.bin"
+Music_LRZ1_S3:		incbin	"Sound/Music/LRZ1.S3.bin"
+Music_LRZ2_S3:		incbin	"Sound/Music/LRZ2.S3.bin"
+Music_SSZ_S3:		incbin	"Sound/Music/SSZ.S3.bin"
+Music_DEZ1_S3:		incbin	"Sound/Music/DEZ1.S3.bin"
+Music_DEZ2_S3:		incbin	"Sound/Music/DEZ2.S3.bin"
+Music_MiniBossSK_S3:	incbin	"Sound/Music/MiniBossSK.S3.bin"
+Music_ZoneBoss_S3:	incbin	"Sound/Music/Boss.S3.bin"
+Music_OrbsBonus_S3:	incbin	"Sound/Music/Magnetic Orbs.bin"
+Music_SpeStage_S3:	incbin	"Sound/Music/Special Stage.S3.bin"
+Music_ActClear_S3:	incbin	"Sound/Music/ActClear.S3.bin"
+Music_Menu_S3:		incbin	"Sound/Music/DataSelect.S3.bin"
+	Z80Bank_End
+; ===========================================================================
+	Z80Bank_Start Z80BankAlign_End,"Mus05"
+Music_SlotsBonus:	incbin	"Sound/Music/Slot Machine.bin"
+Music_GumBonus:		incbin	"Sound/Music/Gum Ball Machine.bin"
+Music_Knuckles_S3:	incbin	"Sound/Music/Knuckles.S3.bin"
+Music_AL:		incbin	"Sound/Music/Azure Lake.bin"
+Music_BP:		incbin	"Sound/Music/Balloon Park.bin"
+Music_DP:		incbin	"Sound/Music/Desert Palace.bin"
+Music_CG:		incbin	"Sound/Music/Chrome Gadget.bin"
+Music_EM:		incbin	"Sound/Music/Endless Mine.bin"
+Music_Title_S3:		incbin	"Sound/Music/Title.S3.bin"
+Music_Credits_S3:	incbin	"Sound/Music/Credits.S3.bin"
+Music_GameOver_S3:	incbin	"Sound/Music/GameOver.S3.bin"
+Music_Continue_S3:	incbin	"Sound/Music/Continue.S3.bin"
+Music_1UP_S3:		incbin	"Sound/Music/1UP.S3.bin"
+Music_ChaosEmer_S3:	incbin	"Sound/Music/Chaos Emerald.S3.bin"
+Music_Invis_S3:		incbin	"Sound/Music/Invincibility.S3.bin"
+Music_2PMenu:		incbin	"Sound/Music/Competition Menu.bin"
+Music_Drowning:		incbin	"Sound/Music/Countdown.bin"
+Music_AllClear:		incbin	"Sound/Music/All Clear.bin"
+	Z80Bank_End
+; ===========================================================================
+	DACBank_Defs 1	; create ROM pointers and setup information about DACs
+	incDAC 86, bin
+	incDAC 81, bin
+	incDAC 82_85, bin
+	incDAC 94_97, bin
+	incDAC 90_93, bin
+	incDAC 88, bin
+	incDAC 8A_8B, bin
+	incDAC 8C, bin
+	incDAC 8D_8E, bin
+	incDAC 87, bin
+	incDAC 8F, bin
+	incDAC 89, bin
+	incDAC 98_9A, bin
+
+; ===========================================================================
+	align	$1000
+Z80_Snd_Driver_S3:	incbin 'Sound/Driver/S3.bin'
+
+; ===========================================================================
+	; create pointers to our music
+	Z80PtrROMBank Music_AIZ1, Music_AIZ2, Music_HCZ1, Music_HCZ2
+	Z80PtrROMBank Music_MGZ1, Music_MGZ2, Music_CNZ1, Music_CNZ2
+	Z80PtrROMBank Music_FBZ1_S3, Music_FBZ2_S3, Music_ICZ1, Music_ICZ2
+	Z80PtrROMBank Music_LBZ1, Music_LBZ2, Music_MVZ1_S3, Music_MVZ2_S3
+
+	Z80PtrROMBank Music_SOZ1_S3, Music_SOZ2_S3, Music_LRZ1_S3, Music_LRZ2_S3
+	Z80PtrROMBank Music_SSZ_S3, Music_DEZ1_S3, Music_DEZ2_S3, Music_MinibossSK_S3
+	Z80PtrROMBank Music_ZoneBoss_S3, Music_DDZ_S3, Music_OrbsBonus_S3, Music_SlotsBonus
+	Z80PtrROMBank Music_SpeStage_S3, Music_GumBonus, Music_Knuckles_S3, Music_AL
+
+	Z80PtrROMBank Music_BP, Music_DP, Music_CG, Music_EM
+	Z80PtrROMBank Music_Title_S3, Music_Credits_S3, Music_GameOver_S3, Music_Continue_S3
+	Z80PtrROMBank Music_ActClear_S3, Music_1UP_S3, Music_ChaosEmer_S3, Music_Invis_S3
+	Z80PtrROMBank Music_2PMenu, Music_Miniboss_S3, Music_Menu_S3, Music_FinalBoss_S3
+
+	Z80PtrROMBank Music_Drowning, Music_AllClear
+
+	Z80createSFXptrs	; and pointers to SFX
+; ===========================================================================
+	include "Sound/Driver/Voices.68k"	; universal voice bank
+	Z80Bank_End
+
+; ===========================================================================
+	DACBank_Defs 2	; create ROM pointers and setup information about DACs
+	incDAC 9B, bin
+	incDAC 9C, bin
+	incDAC 9D, bin
+	incDAC 9E, bin
+	incDAC 9F, bin
+	incDAC A0, bin
+	incDAC A1, bin
+	incDAC A2, bin
+	incDAC A3, bin
+	incDAC A4, bin
+	incDAC A5, bin
+	incDAC A6, bin
+	incDAC A7, bin
+	incDAC A8, bin
+	incDAC A9, bin
+	incDAC AA, bin
+	Z80Bank_End
+
+; ===========================================================================
+	DACBank_Defs 3	; create ROM pointers and setup information about DACs
+	incDAC AB, bin
+	incDAC AC, bin
+	incDAC AD_AE, bin
+	incDAC AF_B0, bin
+	incDAC B0_Unused, bin
+	incDAC B1, bin
+	incDAC B2_B3_S3, bin
+	incDAC B4C1_C4, bin
+	incDAC B5, bin
+	incDAC B6, bin
+	incDAC B7, bin
+	incDAC B8_B9, bin
+	incDAC BA, bin
+	incDAC BB, bin
+	incDAC BC, bin
+	incDAC BD, bin
+	incDAC BE, bin
+	incDAC BF, bin
+	incDAC C0, bin
+	Z80Bank_End
+; ===========================================================================
+	Z80Bank_SFX	"SFX01"	; include sound effects
+	DoDacFile	; write DAC banks to external ROM
+; ===========================================================================
+	; write music banks to external ROM
+offs =	-$200000	; offset to match the true position of Sonic 3 ROM,
+			; so we can split Sonic 3 out and still work properly.
+	StartFile	MusicBanks_S3, "Sound/Driver/MusicBanks_S3.bin", 0
+	MusMakeBankID	Music_AIZ1, Music_AIZ2, Music_HCZ1, Music_HCZ2
+	MusMakeBankID	Music_MGZ1, Music_MGZ2, Music_CNZ1, Music_CNZ2
+	MusMakeBankID	Music_FBZ1_S3, Music_FBZ2_S3, Music_ICZ1, Music_ICZ2
+	MusMakeBankID	Music_LBZ1, Music_LBZ2, Music_MVZ1_S3, Music_MVZ2_S3
+
+	MusMakeBankID	Music_SOZ1_S3, Music_SOZ2_S3, Music_LRZ1_S3, Music_LRZ2_S3
+	MusMakeBankID	Music_SSZ_S3, Music_DEZ1_S3, Music_DEZ2_S3, Music_MinibossSK_S3
+	MusMakeBankID	Music_ZoneBoss_S3, Music_DDZ_S3, Music_OrbsBonus_S3, Music_SlotsBonus
+	MusMakeBankID	Music_SpeStage_S3, Music_GumBonus, Music_Knuckles_S3, Music_AL
+
+	MusMakeBankID	Music_BP, Music_DP, Music_CG, Music_EM
+	MusMakeBankID	Music_Title_S3, Music_Credits_S3, Music_GameOver_S3, Music_Continue_S3
+	MusMakeBankID	Music_ActClear_S3, Music_1UP_S3, Music_ChaosEmer_S3, Music_Invis_S3
+	MusMakeBankID	Music_2PMenu, Music_Miniboss_S3, Music_Menu_S3, Music_FinalBoss_S3
+
+	MusMakeBankID	Music_Drowning, Music_AllClear
+	EndFile
+; ===========================================================================
+	; then create also ROM for misc variables
+	StartFile	SndVariables_S3, "Sound/Driver/VariablesS3.Z80", 0
+	dc.b 'DefaultMusicBank = ', 1		; default music bank location
+	MakeBankID	Music_AIZ1-$200000
+	dc.b 'SoundBank = ', 1			; sound effect bank location
+	MakeBankID	SoundS3_33-$200000
+	dc.b 'SegaPCMBank = ', 1		; SEGA PCM bank location
+	MakeBankID	SEGA_PCMS3-$200000
+	dc.b 'SegaPCMPtr = ', 2			; SEGA PCM pointer
+	dc.w	(((SEGA_PCMS3-$200000-z80BankAddr)&$7FFF)+$8000)
+	EndFile
+; ===========================================================================
