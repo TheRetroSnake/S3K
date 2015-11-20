@@ -1,5 +1,12 @@
 !*.exe
 !*.bat
+err.68k.txt
 s3.bin
-sk.bin
 s3k.bin
+s3k.lst
+sk.bin
+err.S3.txt
+err.SK.txt
+sound/driver/S3.lst
+sound/driver/SK.lst
+sound/driver/build.txt
