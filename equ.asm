@@ -328,7 +328,8 @@ Main_Palette_Line4:			rs.b $20	; $FFFFFC60
 Main_Palette_FadeTo:			rs.b $20	; $FFFFFC80
 Main_Palette_FadeTo_Line2:		rs.b $20	; $FFFFFCA0
 Main_Palette_FadeTo_Line3:		rs.b $20	; $FFFFFCC0
-Main_Palette_FadeTo_Line4:		rs.b $120	; $FFFFFCE0
+Main_Palette_FadeTo_Line4:		rs.b $20	; $FFFFFCE0
+System_Stack_Start:			rs.b $100	; $FFFFFD00
 System_Stack:				rs.w 1		; $FFFFFE00
 Level_Restart_Flag:			rs.w 1		; $FFFFFE02
 Level_Frame_Timer:			rs.w 1		; $FFFFFE04
