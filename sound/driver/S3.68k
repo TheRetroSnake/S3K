@@ -39,7 +39,7 @@ Music_Menu_S3:		incbin	"Sound/Music/DataSelect.S3.bin"
 	Z80Bank_End
 ; ===========================================================================
 	Z80Bank_Start Z80BankAlign_End,"Mus05"
-Music_SlotsBonus:	incbin	"Sound/Music/Slot Machine.bin"
+Music_Slots_S3:		incbin	"Sound/Music/Slot Machine.bin"
 Music_GumBonus:		incbin	"Sound/Music/Gum Ball Machine.bin"
 Music_Knuckles_S3:	incbin	"Sound/Music/Knuckles.S3.bin"
 Music_AL:		incbin	"Sound/Music/Azure Lake.bin"
@@ -87,8 +87,8 @@ Z80_Snd_Driver_S3:	incbin 'Sound/Driver/S3.bin'
 
 	Z80PtrROMBank Music_SOZ1_S3, Music_SOZ2_S3, Music_LRZ1_S3, Music_LRZ2_S3
 	Z80PtrROMBank Music_SSZ_S3, Music_DEZ1_S3, Music_DEZ2_S3, Music_MinibossSK_S3
-	Z80PtrROMBank Music_ZoneBoss_S3, Music_DDZ_S3, Music_OrbsBonus_S3, Music_SlotsBonus
-	Z80PtrROMBank Music_SpeStage_S3, Music_GumBonus, Music_Knuckles_S3, Music_AL
+	Z80PtrROMBank Music_ZoneBoss_S3, Music_DDZ_S3, Music_OrbsBonus_S3, Music_SpeStage_S3
+	Z80PtrROMBank Music_Slots_S3, Music_GumBonus, Music_Knuckles_S3, Music_AL
 
 	Z80PtrROMBank Music_BP, Music_DP, Music_CG, Music_EM
 	Z80PtrROMBank Music_Title_S3, Music_Credits_S3, Music_GameOver_S3, Music_Continue_S3
@@ -159,8 +159,8 @@ offs =	-$200000	; offset to match the true position of Sonic 3 ROM,
 
 	MusMakeBankID	Music_SOZ1_S3, Music_SOZ2_S3, Music_LRZ1_S3, Music_LRZ2_S3
 	MusMakeBankID	Music_SSZ_S3, Music_DEZ1_S3, Music_DEZ2_S3, Music_MinibossSK_S3
-	MusMakeBankID	Music_ZoneBoss_S3, Music_DDZ_S3, Music_OrbsBonus_S3, Music_SlotsBonus
-	MusMakeBankID	Music_SpeStage_S3, Music_GumBonus, Music_Knuckles_S3, Music_AL
+	MusMakeBankID	Music_ZoneBoss_S3, Music_DDZ_S3, Music_OrbsBonus_S3, Music_SpeStage_S3
+	MusMakeBankID	Music_Slots_S3, Music_GumBonus, Music_Knuckles_S3, Music_AL
 
 	MusMakeBankID	Music_BP, Music_DP, Music_CG, Music_EM
 	MusMakeBankID	Music_Title_S3, Music_Credits_S3, Music_GameOver_S3, Music_Continue_S3

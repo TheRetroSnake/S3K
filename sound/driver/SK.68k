@@ -56,15 +56,15 @@ Z80_Snd_Driver2:; create pointers to our music
 
 	Z80PtrROMBank Music_SOZ1, Music_SOZ2, Music_LRZ1, Music_LRZ2
 	Z80PtrROMBank Music_SSZ, Music_DEZ1, Music_DEZ2, Music_Miniboss
-	Z80PtrROMBank Music_ZoneBoss, Music_DDZ, Music_Pachinko, Music_SlotsBonus
-	Z80PtrROMBank Music_SpecialStage, Music_GumBonus, Music_Knuckles, Music_AL
+	Z80PtrROMBank Music_ZoneBoss, Music_DDZ, Music_Pachinko, Music_Slots
+	Z80PtrROMBank Music_GumBonus, Music_SpecialStage, Music_Knuckles, Music_AL
 
 	Z80PtrROMBank Music_BP, Music_DP, Music_CG, Music_EM
 	Z80PtrROMBank Music_Title, Music_Credits_S3, Music_GameOver, Music_Continue
 	Z80PtrROMBank Music_ActClear, Music_1UP, Music_ChaosEmerald, Music_Invincible
 	Z80PtrROMBank Music_2PMenu, Music_Miniboss, Music_Menu, Music_FinalBoss
 
-	Z80PtrROMBank Music_Drowning, Music_AllClear, Music_Credits
+	Z80PtrROMBank Music_Drowning, Music_GameComplete, Music_Credits
 
 	Z80createSFXptrs	; and to sound effects
 ; ===========================================================================
@@ -83,15 +83,15 @@ offs =	0	; write music banks to external ROM
 
 	MusMakeBankID	Music_SOZ1, Music_SOZ2, Music_LRZ1, Music_LRZ2
 	MusMakeBankID	Music_SSZ, Music_DEZ1, Music_DEZ2, Music_Miniboss
-	MusMakeBankID	Music_ZoneBoss, Music_DDZ, Music_Pachinko, Music_SlotsBonus
-	MusMakeBankID	Music_SpecialStage, Music_GumBonus, Music_Knuckles, Music_AL
+	MusMakeBankID	Music_ZoneBoss, Music_DDZ, Music_Pachinko, Music_Slots
+	MusMakeBankID	Music_GumBonus, Music_SpecialStage, Music_Knuckles, Music_AL
 
 	MusMakeBankID	Music_BP, Music_DP, Music_CG, Music_EM
 	MusMakeBankID	Music_Title, Music_Credits_S3, Music_GameOver, Music_Continue
 	MusMakeBankID	Music_ActClear, Music_1UP, Music_ChaosEmerald, Music_Invincible
 	MusMakeBankID	Music_2PMenu, Music_Miniboss, Music_Menu, Music_FinalBoss
 
-	MusMakeBankID	Music_Drowning, Music_AllClear, Music_Credits
+	MusMakeBankID	Music_Drowning, Music_GameComplete, Music_Credits
 	EndFile
 ; ===========================================================================
 	; then create also ROM for misc variables
