@@ -62,7 +62,8 @@ Kos_decomp_buffer:			rs.b $1000	; $FFFFD000
 Horiz_Scroll_Buffer:			rs.b $380	; $FFFFE000
 Coll_response_list:			rs.b $80	; $FFFFE380
 Position_table_P2:			rs.b $100	; $FFFFE400
-Position_table:				rs.b $1ac	; $FFFFE500
+Position_table:				rs.b $100	; $FFFFE500
+Competition_Save_Data:			rs.b $AC	; $FFFFE600
 Current_Save_Slot:			rs.b $54	; $FFFFE6AC
 Ring_Status_Table:			rs.b $400	; $FFFFE700
 Object_respawn_table:			rs.b $300	; $FFFFEB00

@@ -173,7 +173,7 @@ levselstr macro str
 		elseif ('\.cc'>='A')&('\.cc'<='Z')
 			dc.b '\.cc'-'A'+30
 
-		elseif '\.cc'='offset(*)'
+		elseif '\.cc'='*'
 			dc.b 26
 
 		elseif '\.cc'='©'
@@ -184,12 +184,9 @@ levselstr macro str
 
 		elseif '\.cc'='.'
 			dc.b 29
-
-		elseif '\.cc'=' '
-			dc.b 0
 		endif
 
-.lc =			.lc+1
+.lc =		.lc+1
 	endr
     endm
 ; ===========================================================================
