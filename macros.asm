@@ -55,13 +55,12 @@ dmaFillVRAM macro byte,addr,length
 
 ; ==========================================================================
 ; fills a region of 68k RAM with 0
-clearRAM macro addr,length,dregsz,dregclr
+clearRAM	macro addr,length,dregsz,dregclr
 	if (addr&$8000)=0
 		lea	(addr).l,a1
 	else
 		lea	(addr).w,a1
 	endif
-
 
 	if narg<4
 		moveq	#0,d0
@@ -79,6 +78,69 @@ clearRAM macro addr,length,dregsz,dregclr
 		move.w	#(length-(addr&1))/4-1,d1
 	else
 		move.w	#(length-(addr&1))/4-1,\dregsz
+	endif
+
+.loop\@
+	if narg<4
+		move.l	d0,(a1)+
+	else
+		move.l	\dregclr,(a1)+
+	endif
+
+	if narg<3
+		dbf	d1,.loop\@
+	else
+		dbf	\dregsz,.loop\@
+	endif
+
+	if narg<4
+		if ((length-(addr&1))&2)
+			move.w	d0,(a1)+
+		endif
+
+		if ((length-(addr&1))&1)
+			move.b	d0,(a1)+
+		endif
+	else
+		if ((length-(addr&1))&2)
+			move.w	\dregclr,(a1)+
+		endif
+
+		if ((length-(addr&1))&1)
+			move.b	\dregclr,(a1)+
+		endif
+	endif
+    endm
+
+; this is same as clearRAM, but omits the moveq #0
+clearRAM2	macro addr,length,dregsz,dregclr
+	if (addr&$8000)=0
+		lea	(addr).l,a1
+	else
+		lea	(addr).w,a1
+	endif
+
+	if (addr&1)
+		if narg<4
+			move.b	d0,(a1)+
+		else
+			move.b	\dregclr,(a1)+
+		endif
+	endif
+
+len	= (length-(addr&1))/4-1
+	if narg<3
+		if len<$80
+			moveq	#len,d1
+		else
+			move.w	#len,d1
+		endif
+	else
+		if len<$80
+			moveq	#len,\dregsz
+		else
+			move.w	#len,\dregsz
+		endif
 	endif
 
 .loop\@
