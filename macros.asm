@@ -188,14 +188,6 @@ _moveq macro	val,dn
     endm
 
 ; ===========================================================================
-; include certain number x times
-reptnum		macro times, num
-	rept times
-		dc.\0 num
-	endr
-    endm
-
-; ===========================================================================
 SRAMEnable	macro
 	move.b	#1,$A130F1		; enable SRAM
 	endm
