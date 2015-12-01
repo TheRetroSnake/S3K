@@ -185,7 +185,15 @@ _moveq macro	val,dn
 	else
 		inform 1,"value of \val is not expected"
 	endif
-	endm
+    endm
+
+; ===========================================================================
+; include certain number x times
+reptnum		macro times, num
+	rept times
+		dc.\0 num
+	endr
+    endm
 
 ; ===========================================================================
 SRAMEnable	macro
