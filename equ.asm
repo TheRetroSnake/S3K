@@ -43,17 +43,159 @@ PriorLayerObjs	= $40
 
 ; priority level definitions
 	rsset 0
-priority0	rs.b PriorLayerObjs*2; priority level 0
-priority1	rs.b PriorLayerObjs*2; priority level 1
-priority2	rs.b PriorLayerObjs*2; priority level 2
-priority3	rs.b PriorLayerObjs*2; priority level 3
-priority4	rs.b PriorLayerObjs*2; priority level 4
-priority5	rs.b PriorLayerObjs*2; priority level 5
-priority6	rs.b PriorLayerObjs*2; priority level 6
-priority7	rs.b PriorLayerObjs*2; priority level 7
+priority0	rs.b PriorLayerObjs*2; $000 ; priority level 0
+priority1	rs.b PriorLayerObjs*2; $080 ; priority level 1
+priority2	rs.b PriorLayerObjs*2; $100 ; priority level 2
+priority3	rs.b PriorLayerObjs*2; $180 ; priority level 3
+priority4	rs.b PriorLayerObjs*2; $200 ; priority level 4
+priority5	rs.b PriorLayerObjs*2; $280 ; priority level 5
+priority6	rs.b PriorLayerObjs*2; $300 ; priority level 6
+priority7	rs.b PriorLayerObjs*2; $380 ; priority level 7
 SpriteTableSize	rs.b 0; size of the sprite_table_input array
 
 ; ---------------------------------------------------------------------------
+; main object variables.
+	rsset 0		; set __rs to 0
+		rs.l 1; $00 ; long ; object ID. Is actually direct address of the object in ROM.
+render		rs.b 1; $04 ; byte ; flags used to render the object, but BuildSprites. See Status.
+routine		rs.b 1; $05 ; byte ; routine ID of the object, usually multiple of 2. Not necessary for many objects in S3K anymore. see ID.
+height		rs.b 1; $06 ; byte ; height of the object in pixels.
+width		rs.b 1; $07 ; byte ; width of the object in pixels.
+priority	rs.w 1; $08 ; word ; priority of the object. Multiple of $80 ($80 = 1, $380 = 7)
+tile		rs.w 1; $0A ; word ; tile setup to display. Usually known as Art_Tile.
+mappings	rs.l 1; $0C ; long ; ROM offset of the mappings.
+xpos		rs.l 1; $10 ; long ; the horizontal pixel and subpixel coordinate of the object. Some objects only use first word
+ypos		rs.l 1; $14 ; long ; the vertical pixel and subpixel coordinate of the object. Some objects only use first word
+xvel		rs.w 1; $18 ; word ; the horizontal speed of an object in moving objects.
+yvel		rs.w 1; $1A ; word ; the vertical speed of an object in moving objects.
+oboff1C		rs.b 1; $1C
+oboff1D		rs.b 1; $1D
+yrad		rs.b 1; $1E ; byte ; the vertical radius of an object
+xrad		rs.b 1; $1F ; byte ; the horizontal radius of an object
+anim		rs.b 1; $20 ; byte ; animation ID of an object
+anilast		rs.b 1; $21 ; byte ; animation ID for last frame. If not same as anim, animation starts from the start.
+mapframe	rs.b 1; $22 ; byte ; mappings frame to use. Animation routines will write the frame to use next.
+anioff		rs.b 1; $23 ; byte ; animation offset. Next animation data will be read from this offset
+anitime		rs.b 1; $24 ; byte ; time until next animation frame should be shown.
+oboff25		rs.b 1; $25
+angle		rs.w 1; $26 ; word ; angle of the object in scale of 0-255
+collision	rs.b 1; $28 ; byte ; type of the objects collision. 2 high bits determine type, rest of the bits determine size. 0 = no collision
+collhits	rs.b 1; $29 ; byte ; secondary counter. Bosses use this as the hit counters. Some objects may have other uses
+status		rs.b 1; $2A ; byte ; few bits describing things about the object. Few of these bits are transferred to render as well, namely flip bits.
+shireact	rs.b 1; $2B ; byte ; shield rection. depending on settings, this object will get negated by specific shields
+subtype		rs.b 1; $2C ; byte ; this usually gets assigned only by object loader, which will have own slot for object subtype, copied here.
+	rsset __rs+$10-2; advance __rs to get the next things,
+rssbit		rs.b 1; $3B ; byte ; the bit to clear if object is set to be destroyable
+rssaddr		rs.b 1; $3C ; word ; address of the RSS entry for this object
+	rsset __rs+3; advance __rs to get the next things,
+vramoff		rs.w 1; $40 ; word ; VRAM address to DMA art to. Mostly used by objects with Dynamic PLC's
+parent		rs.w 0; $42 ; word ; address of a possible parent object.
+childx		rs.b 1; $42 ; byte ; x-offset relative to parent
+chidly		rs.b 1; $43 ; byte ; y-offset relative to parent
+	rsset __rs+2; advance __rs to get the next things,
+parent2		rs.w 1; $46 ; word ; address of a possible parent object.
+parent3		rs.w 0; $48 ; word ; address of a possible parent object.
+respawn		rs.w 1; $48 ; word ; address of this objects entry in respawn table
+
+; ---------------------------------------------------------------------------
+; these equates are specific to Player Objects
+inertia =	oboff1C; $1C ; word ; the ground velocity of an object. It has no specific direction, and usually depends on the object's angle.
+jumpmove2 =	oboff25; $25 ; byte ; something to do with double jump moves, depending on player
+angle2 =	angle+1; $27 ; byte ; something to do with angle.
+
+	rsset $2B; skip to this equate because nothing before of it is meaningful
+shistatus	rs.b 1; $2B ; byte ; stores information about shields, invinciblity and speed shoes
+airleft		rs.b 1; $2C ; byte ; amount of air the player has left.
+unk2D		rs.b 1; $2D ; byte ;
+unk2E		rs.b 1; $2E ; byte ;
+jumpmove	rs.b 1; $2F ; byte ; information about double jump moves. Depends on the player
+unk30		rs.b 1; $30 ; byte ;
+unk31		rs.b 1; $31 ; byte ;
+movelock	rs.w 1; $32 ; word ; the amount of frames player cannot move left or right.
+invultime	rs.b 1; $33 ; byte ; amount of time player is invulnerable for
+invistime	rs.b 1; $34 ; byte ; amount of time player is invincible for
+speedtime	rs.b 1; $35 ; byte ; amount of time player has speed shoes for
+unk37		rs.b 1; $37 ; byte ;
+charnum		rs.b 1; $38 ; byte ; player ID. 0 = Sonic, 1 = Tails, 2 = Knuckles
+scrolldelay	rs.b 1; $39 ; byte ; tbe scroll delay timer, incremented for as long as player looks up or down.
+tiltfront	rs.b 1; $3A ; byte ; check later
+tiltback	rs.b 1; $3B ; byte ; check later
+unk3C		rs.b 1; $3C ; byte ;
+spindash	rs.b 1; $3D ; byte ; bit 1 indicates spindash active, bit 7 is forced roll active
+spdashtime	rs.w 1; $3E ; word ;
+jumping		rs.b 1; $40 ; byte ; set if jumping
+		rs.b 1; $41 ; byte ; unused
+interact	rs.w 1; $42 ; word ; the RAM address of the object stood on
+yraddef		rs.b 1; $44 ; byte ; the default y-radius of the object
+xraddef		rs.b 1; $45 ; byte ; the default x-radius of the object
+topsolid	rs.b 1; $46 ; byte ; the bit used to check top solidity with
+lrbsolid	rs.b 1; $47 ; byte ; the bit used to check lrb solidity with
+
+; ---------------------------------------------------------------------------
+; offsets objects may use
+oboff12	= 	xpos+2	; $12
+oboff16	= 	ypos+2	; $16
+oboff27	=	angle+1	; $27
+
+	rsset $20	; set __rs for these equates
+oboff20		rs.b 1; $20
+oboff21		rs.b 1; $21
+oboff22		rs.b 1; $22
+oboff23		rs.b 1; $23
+oboff24		rs.b 1; $24
+		rs.b 1; $25 ; already defined
+oboff26		rs.b 1; $26
+		rs.b 1; $27 ; already defined
+oboff28		rs.b 1; $28
+oboff29		rs.b 1; $29
+oboff2A		rs.b 1; $2A
+oboff2B		rs.b 1; $2B
+oboff2C		rs.b 1; $2C
+oboff2D		rs.b 1; $2D
+oboff2E		rs.b 1; $2E
+oboff2F		rs.b 1; $2F
+oboff30		rs.b 1; $30
+oboff31		rs.b 1; $31
+oboff32		rs.b 1; $32
+oboff33		rs.b 1; $33
+oboff34		rs.b 1; $34
+oboff35		rs.b 1; $35
+oboff36		rs.b 1; $36
+oboff37		rs.b 1; $37
+oboff38		rs.b 1; $38
+oboff39		rs.b 1; $39
+oboff3A		rs.b 1; $3A
+oboff3B		rs.b 1; $3B
+oboff3C		rs.b 1; $3C
+oboff3D		rs.b 1; $3D
+oboff3E		rs.b 1; $3E
+oboff3F		rs.b 1; $3F
+oboff40		rs.b 1; $40
+oboff41		rs.b 1; $41
+oboff42		rs.b 1; $42
+oboff43		rs.b 1; $43
+oboff44		rs.b 1; $44
+oboff45		rs.b 1; $45
+oboff46		rs.b 1; $46
+oboff47		rs.b 1; $47
+oboff48		rs.b 1; $48
+oboff49		rs.b 1; $49
+objsize		rs.b 1; $4A ; this is the defined object size. Next object starts right after.
+
+; ---------------------------------------------------------------------------
+; offsets used by child sprites
+childnum	= oboff16	; $16 ; word ; number of child sprites
+childdata	= childnum+2	; $18 ; data of child sprites. See below
+
+	rsset 0
+child_x		rs.w 1; word ; x-offset of the child sprite
+child_y		rs.w 1; word ; y-offset of the child sprite
+		rs.b 1; unused
+child_frm	rs.b 1; byte ; mappings frame of the child sprite
+child_sz	rs.b 0; size of a single child sprite
+
+; ---------------------------------------------------------------------------
+; Main RAM variables
 	rsset $FFFF0000
 Chunk_table:				rs.b $8000	; $FFFF0000
 Level_layout_header:			rs.b 8		; $FFFF8000
@@ -61,18 +203,20 @@ Level_layout_main:			rs.b $ff8	; $FFFF8008
 Block_table:				rs.b $1a00	; $FFFF9000
 Nemdec_buffer:				rs.b $200	; $FFFFAA00
 Sprite_table_input:			rs.b SpriteTableSize; $FFFFAC00
-Object_RAM:				rs.b $4a	; $FFFFB000
-Obj_player_2:				rs.b $4a	; $FFFFB04A
-Object_RAM_misc:			rs.b $4a	; $FFFFB094
-Object_RAM_free:			rs.b $1a04	; $FFFFB0DE
-Object_RAM_static:			rs.b $de	; $FFFFCAE2
-Obj_super_stars:			rs.b $4a	; $FFFFCBC0
-Obj_tails_tails:			rs.b $4a	; $FFFFCC0A
-Obj_dust:				rs.b $4a	; $FFFFCC54
-Obj_dust_2:				rs.b $4a	; $FFFFCC9E
-Obj_shield:				rs.b $4a	; $FFFFCCE8
-Obj_shield_2:				rs.b $172	; $FFFFCD32
-Obj_invis_stars:			rs.b $15c	; $FFFFCEA4
+Object_RAM:				rs.b objsize	; $FFFFB000
+Obj_player_2:				rs.b objsize	; $FFFFB04A
+Object_RAM_misc:			rs.b objsize	; $FFFFB094
+Object_RAM_free:			rs.b objsize*90	; $FFFFB0DE
+Object_RAM_static:			rs.b objsize*3	; $FFFFCAE2
+Obj_super_stars:			rs.b objsize	; $FFFFCBC0
+Obj_tails_tails:			rs.b objsize	; $FFFFCC0A
+Obj_dust:				rs.b objsize	; $FFFFCC54
+Obj_dust_2:				rs.b objsize	; $FFFFCC9E
+Obj_shield:				rs.b objsize	; $FFFFCCE8
+Obj_shield_2:				rs.b objsize*5	; $FFFFCD32
+Obj_invis_stars:			rs.b objsize*4	; $FFFFCEA4
+Object_RAM_End:				rs.b 0		; $FFFFCFCC
+					rs.b $34	; $FFFFCFCC	; unknown
 Kos_decomp_buffer:			rs.b $1000	; $FFFFD000
 Horiz_Scroll_Buffer:			rs.b $380	; $FFFFE000
 Coll_response_list:			rs.b $80	; $FFFFE380
@@ -495,146 +639,5 @@ Checksum_String:			rs.l 1		; $FFFFFFFC
 Sprite_attribute_table_2 	equ   $FF7880
 Sprite_attribute_table_P2	equ   $FF7B00
 Sprite_attribute_table_P2_2 	equ   $FF7D80
-
-; ---------------------------------------------------------------------------
-; main object variables.
-	rsset 0		; set __rs to 0
-		rs.l 1; $00 ; long ; object ID. Is actually direct address of the object in ROM.
-render		rs.b 1; $04 ; byte ; flags used to render the object, but BuildSprites. See Status.
-routine		rs.b 1; $05 ; byte ; routine ID of the object, usually multiple of 2. Not necessary for many objects in S3K anymore. see ID.
-height		rs.b 1; $06 ; byte ; height of the object in pixels.
-width		rs.b 1; $07 ; byte ; width of the object in pixels.
-priority	rs.w 1; $08 ; word ; priority of the object. Multiple of $80 ($80 = 1, $380 = 7)
-tile		rs.w 1; $0A ; word ; tile setup to display. Usually known as Art_Tile.
-mappings	rs.l 1; $0C ; long ; ROM offset of the mappings.
-xpos		rs.l 1; $10 ; long ; the horizontal pixel and subpixel coordinate of the object. Some objects only use first word
-ypos		rs.l 1; $14 ; long ; the vertical pixel and subpixel coordinate of the object. Some objects only use first word
-xvel		rs.w 1; $18 ; word ; the horizontal speed of an object in moving objects.
-yvel		rs.w 1; $1A ; word ; the vertical speed of an object in moving objects.
-oboff1C		rs.b 1; $1C
-oboff1D		rs.b 1; $1D
-yrad		rs.b 1; $1E ; byte ; the vertical radius of an object
-xrad		rs.b 1; $1F ; byte ; the horizontal radius of an object
-anim		rs.b 1; $20 ; byte ; animation ID of an object
-anilast		rs.b 1; $21 ; byte ; animation ID for last frame. If not same as anim, animation starts from the start.
-mapframe	rs.b 1; $22 ; byte ; mappings frame to use. Animation routines will write the frame to use next.
-anioff		rs.b 1; $23 ; byte ; animation offset. Next animation data will be read from this offset
-anitime		rs.b 1; $24 ; byte ; time until next animation frame should be shown.
-oboff25		rs.b 1; $25
-angle		rs.w 1; $26 ; word ; angle of the object in scale of 0-255
-collision	rs.b 1; $28 ; byte ; type of the objects collision. 2 high bits determine type, rest of the bits determine size. 0 = no collision
-collhits	rs.b 1; $29 ; byte ; secondary counter. Bosses use this as the hit counters. Some objects may have other uses
-status		rs.b 1; $2A ; byte ; few bits describing things about the object. Few of these bits are transferred to render as well, namely flip bits.
-shireact	rs.b 1; $2B ; byte ; shield rection. depending on settings, this object will get negated by specific shields
-subtype		rs.b 1; $2C ; byte ; this usually gets assigned only by object loader, which will have own slot for object subtype, copied here.
-	rsset __rs+$10-2; advance __rs to get the next things,
-rssbit		rs.b 1; $3B ; byte ; the bit to clear if object is set to be destroyable
-rssaddr		rs.b 1; $3C ; word ; address of the RSS entry for this object
-	rsset __rs+3; advance __rs to get the next things,
-vramoff		rs.w 1; $40 ; word ; VRAM address to DMA art to. Mostly used by objects with Dynamic PLC's
-parent		rs.w 0; $42 ; word ; address of a possible parent object.
-childx		rs.b 1; $42 ; byte ; x-offset relative to parent
-chidly		rs.b 1; $43 ; byte ; y-offset relative to parent
-	rsset __rs+2; advance __rs to get the next things,
-parent2		rs.w 1; $46 ; word ; address of a possible parent object.
-parent3		rs.w 0; $48 ; word ; address of a possible parent object.
-respawn		rs.w 1; $48 ; word ; address of this objects entry in respawn table
-
-; ---------------------------------------------------------------------------
-; these equates are specific to Player Objects
-inertia =	oboff1C; $1C ; word ; the ground velocity of an object. It has no specific direction, and usually depends on the object's angle.
-jumpmove2 =	oboff25; $25 ; byte ; something to do with double jump moves, depending on player
-angle2 =	angle+1; $27 ; byte ; something to do with angle.
-
-	rsset $2B; skip to this equate because nothing before of it is meaningful
-shistatus	rs.b 1; $2B ; byte ; stores information about shields, invinciblity and speed shoes
-airleft		rs.b 1; $2C ; byte ; amount of air the player has left.
-unk2D		rs.b 1; $2D ; byte ;
-unk2E		rs.b 1; $2E ; byte ;
-jumpmove	rs.b 1; $2F ; byte ; information about double jump moves. Depends on the player
-unk30		rs.b 1; $30 ; byte ;
-unk31		rs.b 1; $31 ; byte ;
-movelock	rs.b 1; $32 ; byte ; the amount of frames player cannot move left or right.
-invultime	rs.b 1; $33 ; byte ; amount of time player is invulnerable for
-invistime	rs.b 1; $34 ; byte ; amount of time player is invincible for
-speedtime	rs.b 1; $35 ; byte ; amount of time player has speed shoes for
-unk37		rs.b 1; $37 ; byte ;
-charnum		rs.b 1; $38 ; byte ; player ID. 0 = Sonic, 1 = Tails, 2 = Knuckles
-scrolldelay	rs.b 1; $39 ; byte ; tbe scroll delay timer, incremented for as long as player looks up or down.
-tiltfront	rs.b 1; $3A ; byte ; check later
-tiltback	rs.b 1; $3B ; byte ; check later
-unk3C		rs.b 1; $3C ; byte ;
-spindash	rs.b 1; $3D ; byte ; bit 1 indicates spindash active, bit 7 is forced roll active
-spdashtime	rs.w 1; $3E ; word ;
-jumping		rs.b 1; $40 ; byte ; set if jumping
-		rs.b 1; $41 ; byte ; unused
-interact	rs.w 1; $42 ; word ; the RAM address of the object stood on
-yraddef		rs.b 1; $44 ; byte ; the default y-radius of the object
-xraddef		rs.b 1; $45 ; byte ; the default x-radius of the object
-topsolid	rs.b 1; $46 ; byte ; the bit used to check top solidity with
-lrbsolid	rs.b 1; $46 ; byte ; the bit used to check lrb solidity with
-
-; ---------------------------------------------------------------------------
-; offsets objects may use
-oboff12	= 	xpos+2	; $12
-oboff16	= 	ypos+2	; $16
-oboff27	=	angle+1	; $27
-
-	rsset $20	; set __rs for these equates
-oboff20		rs.b 1; $20
-oboff21		rs.b 1; $21
-oboff22		rs.b 1; $22
-oboff23		rs.b 1; $23
-oboff24		rs.b 1; $24
-		rs.b 1; $25 ; already defined
-oboff26		rs.b 1; $26
-		rs.b 1; $27 ; already defined
-oboff28		rs.b 1; $28
-oboff29		rs.b 1; $29
-oboff2A		rs.b 1; $2A
-oboff2B		rs.b 1; $2B
-oboff2C		rs.b 1; $2C
-oboff2D		rs.b 1; $2D
-oboff2E		rs.b 1; $2E
-oboff2F		rs.b 1; $2F
-oboff30		rs.b 1; $30
-oboff31		rs.b 1; $31
-oboff32		rs.b 1; $32
-oboff33		rs.b 1; $33
-oboff34		rs.b 1; $34
-oboff35		rs.b 1; $35
-oboff36		rs.b 1; $36
-oboff37		rs.b 1; $37
-oboff38		rs.b 1; $38
-oboff39		rs.b 1; $39
-oboff3A		rs.b 1; $3A
-oboff3B		rs.b 1; $3B
-oboff3C		rs.b 1; $3C
-oboff3D		rs.b 1; $3D
-oboff3E		rs.b 1; $3E
-oboff3F		rs.b 1; $3F
-oboff40		rs.b 1; $40
-oboff41		rs.b 1; $41
-oboff42		rs.b 1; $42
-oboff43		rs.b 1; $43
-oboff44		rs.b 1; $44
-oboff45		rs.b 1; $45
-oboff46		rs.b 1; $46
-oboff47		rs.b 1; $47
-oboff48		rs.b 1; $48
-oboff49		rs.b 1; $49
-objsize		rs.b 1; $4A ; this is the defined object size. Next object starts right after.
-
-; ---------------------------------------------------------------------------
-; offsets used by child sprites
-childnum	= oboff16	; $16 ; word ; number of child sprites
-childdata	= childnum+2	; $18 ; data of child sprites. See below
-
-	rsset 0
-child_x		rs.w 1; word ; x-offset of the child sprite
-child_y		rs.w 1; word ; y-offset of the child sprite
-		rs.b 1; unused
-child_frm	rs.b 1; byte ; mappings frame of the child sprite
-child_sz	rs.b 0; size of a single child sprite
 
 ; ---------------------------------------------------------------------------
