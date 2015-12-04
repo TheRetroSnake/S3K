@@ -1,8 +1,14 @@
 ; ===========================================================================
 align macro alignment
-     cnop 0,\alignment
-     endm
-    ; ===========================================================================
+	cnop 0,\alignment
+    endm
+; ===========================================================================
+; this macro exists simply so I can be lazy. Instead of incbin/even combo you can just use this.
+inceven		macro file
+	incbin \file
+	even
+    endm
+; ===========================================================================
 vdpComm		macro ins,addr,type,rwd,end,end2
 	if narg=5
 		\ins #(((\type&\rwd)&3)<<30)|((\addr&$3FFF)<<16)|(((\type&\rwd)&$FC)<<2)|((\addr&$C000)>>14), \end
