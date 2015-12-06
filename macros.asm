@@ -2,12 +2,14 @@
 align macro alignment
 	cnop 0,\alignment
     endm
+
 ; ===========================================================================
 ; this macro exists simply so I can be lazy. Instead of incbin/even combo you can just use this.
 inceven		macro file
 	incbin \file
 	even
     endm
+
 ; ===========================================================================
 vdpComm		macro ins,addr,type,rwd,end,end2
 	if narg=5
@@ -194,6 +196,48 @@ _moveq macro	val,dn
     endm
 
 ; ===========================================================================
+; this macro allows to condence LevelLoadBlock entries.
+lvlblk		macro plc1, plc2, pal, tls1, tls2, blk1, blk2, chnk1, chnk2
+	dc.l (plc1<<24)|tls1, (plc2<<24)|tls2
+	dc.l (pal<<24)|blk1, (pal<<24)|blk2
+	dc.l chnk1, chnk2
+    endm
+
+; ===========================================================================
+; these macros allow to make easy offset tables, mostly to clean clutter at times
+offsettable	macro pos
+	if narg=0
+offtbl =	offset(*)
+	else
+offtbl =	\pos
+	endif
+    endm
+
+ote	macro pos
+	rept narg
+		dc.\0 \pos-offtbl
+	shift
+	endr
+    endm
+
+; ===========================================================================
+; these macros allow for easier PLC control
+PLCStart	macro plcName
+curPLCname	equs \plcName
+PLC_\curPLCname:
+	dc.w ((PLC_\curPLCname\_End-PLC_\curPLCname)/6)-1
+    endm
+
+PLCEnd		macro
+PLC_\curPLCname\_End:
+    endm
+
+PLC		macro vram, ptr
+	dc.l ptr
+	dc.w vram
+    endm
+
+; ===========================================================================
 SRAMEnable	macro
 	move.b	#1,$A130F1		; enable SRAM
 	endm
@@ -201,6 +245,7 @@ SRAMEnable	macro
 SRAMDisable	macro
 	move.b	#0,$A130F1		; disable SRAM
 	endm
+
 ; ===========================================================================
 ; tells the Z80 to stop, and waits for it to finish stopping (acquire bus)
 stopZ80 macro
