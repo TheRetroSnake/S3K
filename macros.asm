@@ -204,6 +204,13 @@ lvlblk		macro plc1, plc2, pal, tls1, tls2, blk1, blk2, chnk1, chnk2
     endm
 
 ; ===========================================================================
+; this macro allows to condence PalettePointers entries
+pal		macro dat, ram, len
+	dc.l dat
+	dc.w ram&$FFFF, (len/4)-1
+    endm
+
+; ===========================================================================
 ; these macros allow to make easy offset tables, mostly to clean clutter at times
 offsettable	macro pos
 	if narg=0
