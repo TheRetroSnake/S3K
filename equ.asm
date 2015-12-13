@@ -112,9 +112,9 @@ jumpmove	rs.b 1; $2F ; byte ; information about double jump moves. Depends on th
 unk30		rs.b 1; $30 ; byte ;
 unk31		rs.b 1; $31 ; byte ;
 movelock	rs.w 1; $32 ; word ; the amount of frames player cannot move left or right.
-invultime	rs.b 1; $33 ; byte ; amount of time player is invulnerable for
-invistime	rs.b 1; $34 ; byte ; amount of time player is invincible for
-speedtime	rs.b 1; $35 ; byte ; amount of time player has speed shoes for
+invultime	rs.b 1; $34 ; byte ; amount of time player is invulnerable for
+invistime	rs.b 1; $35 ; byte ; amount of time player is invincible for
+speedtime	rs.b 1; $36 ; byte ; amount of time player has speed shoes for
 unk37		rs.b 1; $37 ; byte ;
 charnum		rs.b 1; $38 ; byte ; player ID. 0 = Sonic, 1 = Tails, 2 = Knuckles
 scrolldelay	rs.b 1; $39 ; byte ; tbe scroll delay timer, incremented for as long as player looks up or down.
@@ -213,8 +213,9 @@ Obj_tails_tails:			rs.b objsize	; $FFFFCC0A
 Obj_dust:				rs.b objsize	; $FFFFCC54
 Obj_dust_2:				rs.b objsize	; $FFFFCC9E
 Obj_shield:				rs.b objsize	; $FFFFCCE8
-Obj_shield_2:				rs.b objsize*5	; $FFFFCD32
-Obj_invis_stars:			rs.b objsize*4	; $FFFFCEA4
+Obj_shield_2:				rs.b objsize	; $FFFFCD32
+Obj_Invis_stars:			rs.b objsize*4	; $FFFFCD7C
+Obj_invis_stars_2:			rs.b objsize*4	; $FFFFCEA4
 Object_RAM_End:				rs.b 0		; $FFFFCFCC
 					rs.b $34	; $FFFFCFCC	; unknown
 Kos_decomp_buffer:			rs.b $1000	; $FFFFD000
