@@ -196,6 +196,20 @@ _moveq macro	val,dn
     endm
 
 ; ===========================================================================
+; helper macro to make value to absolute value (always positive signed integer)
+abs	macro reg
+	bpl.s	.isabs\@		; branch if positive
+	neg.\0	\reg			; negative to positive
+
+.isabs\@
+    endm
+
+abs2	macro reg
+	tst.\0	\reg			; test register value (set N bit)
+	abs.\0	\reg			; do the normal absolute bs shite
+    endm
+
+; ===========================================================================
 ; this macro allows to condence LevelLoadBlock entries.
 lvlblk		macro plc1, plc2, pal, tls1, tls2, blk1, blk2, chnk1, chnk2
 	dc.l (plc1<<24)|tls1, (plc2<<24)|tls2
@@ -246,24 +260,24 @@ PLC		macro vram, ptr
 
 ; ===========================================================================
 SRAMEnable	macro
-	move.b	#1,$A130F1		; enable SRAM
+	move.b	#1,SRAM_access		; enable SRAM
 	endm
 
 SRAMDisable	macro
-	move.b	#0,$A130F1		; disable SRAM
+	move.b	#0,SRAM_access		; disable SRAM
 	endm
 
 ; ===========================================================================
 ; tells the Z80 to stop, and waits for it to finish stopping (acquire bus)
 stopZ80 macro
-		move.w	#$100,(Z80_bus_request).l ; stop the Z80
-.loop\@		btst	#0,(Z80_bus_request).l
-		bne.s	.loop\@ ; loop until it says it's stopped
+		move.w	#$100,Z80_bus_request	; stop the Z80
+.loop\@		btst	#0,Z80_bus_request
+		bne.s	.loop\@			; loop until it says it's stopped
     endm
 
 ; tells the Z80 to start again
 startZ80 macro
-		move.w	#0,(Z80_bus_request).l    ; start the Z80
+		move.w	#0,Z80_bus_request	; start the Z80
     endm
 
 ; ===========================================================================

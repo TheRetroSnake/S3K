@@ -10,7 +10,7 @@ Z80_RAM_end =			$A02000 ; end of non-reserved Z80 RAM
 Z80_bus_request =		$A11100
 Z80_reset =			$A11200
 
-SRAM_access_flag =		$A130F1
+SRAM_access =			$A130F1
 Security_addr =			$A14000
 
 ; ---------------------------------------------------------------------------
@@ -39,7 +39,7 @@ VDP_control_port =		$C00004
 PSG_input =			$C00011
 ; ---------------------------------------------------------------------------
 ; some equates for Sprite_table_input
-PriorLayerObjs	= $40
+PriorLayerObjs =	$40
 
 ; priority level definitions
 	rsset 0
