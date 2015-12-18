@@ -74,7 +74,7 @@ yrad		rs.b 1; $1E ; byte ; the vertical radius of an object
 xrad		rs.b 1; $1F ; byte ; the horizontal radius of an object
 anim		rs.b 1; $20 ; byte ; animation ID of an object
 anilast		rs.b 1; $21 ; byte ; animation ID for last frame. If not same as anim, animation starts from the start.
-mapframe	rs.b 1; $22 ; byte ; mappings frame to use. Animation routines will write the frame to use next.
+frame		rs.b 1; $22 ; byte ; mappings frame to use. Animation routines will write the frame to use next.
 anioff		rs.b 1; $23 ; byte ; animation offset. Next animation data will be read from this offset
 anitime		rs.b 1; $24 ; byte ; time until next animation frame should be shown.
 oboff25		rs.b 1; $25
