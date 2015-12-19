@@ -37,6 +37,7 @@ HW_Expansion_SCtrl =		$A1001F
 VDP_data_port =			$C00000
 VDP_control_port =		$C00004
 PSG_input =			$C00011
+
 ; ---------------------------------------------------------------------------
 ; some equates for Sprite_table_input
 PriorLayerObjs =	$40
@@ -292,7 +293,7 @@ Camera_BG2_Y:				rs.l 1		; $FFFFEE9C
 Camera_BG2_X_Rounded:			rs.w 1		; $FFFFEEA0
 Camera_BG2_Y_Rounded:			rs.w 1		; $FFFFEEA2
 Plane_double_update:			rs.w 1		; $FFFFEEA4
-Special_VInt_FX_Routine:		rs.w 1		; $FFFFEEA6
+SpecialFX_Routine:			rs.w 1		; $FFFFEEA6
 Screen_X_wrap_value:			rs.w 1		; $FFFFEEA8
 Screen_Y_wrap_value:			rs.w 1		; $FFFFEEAA
 Camera_Y_pos_mask:			rs.w 1		; $FFFFEEAC
@@ -310,7 +311,8 @@ LevelUpdate_Pos:			rs.w 1		; $FFFFEEC8
 LevelUpdate_Counter:			rs.w 1		; $FFFFEECA
 ScreenShake_Flag:			rs.w 1		; $FFFFEECC
 ScreenShake_Value:			rs.w 1		; $FFFFEECE
-ScreenShake_Value_prev:			rs.b $6a	; $FFFFEED0
+ScreenShake_Value_prev:			rs.b $1A	; $FFFFEED0
+Verti_Scroll_Buffer:			rs.w 40		; $FFFFEEEA
 Sprite_Draw_Flag:			rs.w 1		; $FFFFEF3A
 Use_normal_sprite_table:		rs.w 1		; $FFFFEF3C
 Sprite_Table_Flag_2P:			rs.b 6		; $FFFFEF3E

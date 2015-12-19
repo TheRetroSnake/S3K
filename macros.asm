@@ -210,6 +210,20 @@ abs2	macro reg
     endm
 
 ; ===========================================================================
+unloadthis	macro ins
+	move.w	respawn(a0),d0			; get respawn index of the object
+	beq.s	.noresp\@			; if null, branch
+	movea.w	d0,a2				; get it to a2
+	bclr	#7,(a2)				; set as despawned (so Object loader can load later)
+
+	if narg=0
+.noresp\@
+	else
+.noresp\@	\ins	DeleteObject_This	; delete this current object
+	endif
+    endm
+
+; ===========================================================================
 ; this macro allows to condence LevelLoadBlock entries.
 lvlblk		macro plc1, plc2, pal, tls1, tls2, blk1, blk2, chnk1, chnk2
 	dc.l (plc1<<24)|tls1, (plc2<<24)|tls2
